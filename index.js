@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 const clipboardy = require("clipboardy");
+const moment = require("moment");
 const FormData = require("form-data");
 
 const logDir = process.env.LOG_DIR;
@@ -89,8 +90,10 @@ const processFiles = async (rootDir, date) => {
 
 const sortArrayByTime = () => {
   const getTimeHelper = (str) => {
-    const timeStr = str.split("-")[2].split("_")[0]; // oh boy
-    return parseInt(timeStr);
+    const test = /\d{8}-\d{6}/
+    const timeStr = str.match(test)[0]; 
+    const date = moment(timeStr, 'YYYYMMDD-HHmmss').toDate().getTime();
+    return date;
   }
 
   urls.sort((a, b) => {
