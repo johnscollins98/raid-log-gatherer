@@ -1,0 +1,19 @@
+{
+  "name": "discord-log-gatherer",
+  "version": "1.0.0",
+  "description": "* Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "clipboardy": "^2.3.0",
+    "dotenv": "^8.2.0",
+    "form-data": "^3.0.0"
+  },
+  "devDependencies": {}
+}
