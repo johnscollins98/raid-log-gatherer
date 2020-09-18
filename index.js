@@ -48,16 +48,16 @@ const sendToDPSReport = (fullPath) => {
       "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
     },
   }).then((res) => {
-    urlsString += `\n${res.data.permalink}`;
+    urls.push(res.data.permalink);
   });
 };
 
 /* 
-  using a global string probably isn't the way to go
+  using a global array probably isn't the way to go
   but it's simple and this script has a limited scope
   so it will be fine for this scenario 
 */
-let urlsString = "";
+let urls = [];
 
 const processFiles = async (rootDir, date) => {
   let promises = [];
@@ -87,12 +87,25 @@ const processFiles = async (rootDir, date) => {
   await Promise.all(promises);
 };
 
+const sortArrayByTime = () => {
+  const getTimeHelper = (str) => {
+    const timeStr = str.split("-")[2].split("_")[0]; // oh boy
+    return parseInt(timeStr);
+  }
+
+  urls.sort((a, b) => {
+    return getTimeHelper(a) - getTimeHelper(b);
+  });
+}
+
 const main = async () => {
   const dateToCheck = getDate();
   await processFiles(logDir, dateToCheck);
+  sortArrayByTime();
 
-  console.log(urlsString);
-  clipboardy.writeSync(urlsString);
+  const str = urls.reduce((result, s) => result += `\n${s}`);
+  console.log(str);
+  clipboardy.writeSync(str);
   console.log("Copied to clipboard");
 };
 
